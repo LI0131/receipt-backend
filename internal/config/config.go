@@ -11,6 +11,7 @@ type Config struct {
 	PublicPort     string
 	LogLevel       string
 	Hostname       string
+	BaseApiPath    string
 	DatabaseConfig DbConfig
 }
 
@@ -22,7 +23,7 @@ type DbConfig struct {
 	DBPort     string
 }
 
-func get() *Config {
+func Get() *Config {
 	options := viper.New()
 
 	hostname, err := os.Hostname()
@@ -35,6 +36,7 @@ func get() *Config {
 	options.SetDefault("Hostname", hostname)
 	options.SetDefault("PublicPort", 8080)
 	options.SetDefault("LogLevel", "INFO")
+	options.SetDefault("BaseApiPath", "/v1/api")
 
 	// Set Database Defaults
 	options.SetDefault("DatabaseUser", "receipt-api")
@@ -48,6 +50,7 @@ func get() *Config {
 		PublicPort:  options.GetString("PublicPort"),
 		LogLevel:    options.GetString("LogLevel"),
 		Hostname:    options.GetString("Hostname"),
+		BaseApiPath: options.GetString("BaseApiPath"),
 		DatabaseConfig: DbConfig{
 			DBUser:     options.GetString("DatabaseUser"),
 			DBPassword: options.GetString("DatabasePassword"),

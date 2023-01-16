@@ -7,12 +7,13 @@ import (
 )
 
 type Config struct {
-	Environment    string
-	PublicPort     string
-	LogLevel       string
-	Hostname       string
-	BaseApiPath    string
-	DatabaseConfig DbConfig
+	Environment      string
+	PublicPort       string
+	LogLevel         string
+	Hostname         string
+	BaseApiPath      string
+	DatabaseConfig   DbConfig
+	FileServerConfig FileServerConfig
 }
 
 type DbConfig struct {
@@ -21,6 +22,10 @@ type DbConfig struct {
 	DBName     string
 	DBHost     string
 	DBPort     string
+}
+
+type FileServerConfig struct {
+	FileLocation string
 }
 
 func Get() *Config {
@@ -45,6 +50,9 @@ func Get() *Config {
 	options.SetDefault("DatabaseHost", "0.0.0.0")
 	options.SetDefault("DatabasePort", 5432)
 
+	// Set FileServer Defaults
+	options.SetDefault("FileLocation", "/static")
+
 	return &Config{
 		Environment: options.GetString("Environment"),
 		PublicPort:  options.GetString("PublicPort"),
@@ -57,6 +65,9 @@ func Get() *Config {
 			DBName:     options.GetString("DatabaseName"),
 			DBHost:     options.GetString("DatabaseHost"),
 			DBPort:     options.GetString("DatabasePort"),
+		},
+		FileServerConfig: FileServerConfig{
+			FileLocation: options.GetString("FileLocation"),
 		},
 	}
 }

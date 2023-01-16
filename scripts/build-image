@@ -1,0 +1,10 @@
+#!/bin/bash
+set -exv
+
+SCRIPTDIR=$(cd "$(dirname -- "$0")"; pwd)
+DOCKER_CONTEXT=$(cd $SCRIPTDIR; cd ..; pwd)
+IMAGE=$(basename $DOCKER_CONTEXT)
+IMAGE_TAG=$(git rev-parse --short=7 HEAD)
+
+docker build -t "${IMAGE}:${IMAGE_TAG}" $DOCKER_CONTEXT
+docker tag "${IMAGE}:${IMAGE_TAG}" "${IMAGE}:latest"
